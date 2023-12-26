@@ -1,57 +1,61 @@
 //Filename: Problem1.java
 //Author: Keidy Lopez
-//Description: program that encrypts a phrase using a secret number
+//Description: compund interest calculator
 
 import java.util.Locale;
 import java.util.Scanner;
+import java.lang.Math;
 
 public class Problem1 {
-//encrypts the message excludint punctuation
-    public static String encryption(String phrase, int num) {
-        StringBuilder string = new StringBuilder();
-        char char2;
-        int e;
+    public static double compoundInterestCalculator(double p, double r, int n, int t ){
+//      additional values needed for calculation
+        double base,A,c;
+        int expo;
+//      breakes up interest formula into chucks according to PEMDAS, for ease of calculation
+        base = ((r/n)+1);
+        expo = n*t;
+        c = Math.pow(base, expo);
+        A = c*p;
 
-        for (int i = 0; i < phrase.length(); i++) {
-            char2=phrase.charAt(i);
-            if(char2>=33&&char2<=47||char2>=58&&char2<=64||char2>=91&&char2<=96||char2>=123&&char2<=126)
-                string.append(char2);
-            else{
-                e = char2 ^ num;
-                string.append(String.valueOf(e));
-            }
-        }
-        return string.toString();
+        return A;
     }
-
     public static void main(String[] args) {
-        String phrase;
-        boolean flag = true;
-        String ans;
+//      variables needed
         Scanner input = new Scanner(System.in);
-        int num;
-// gets information from user and encrypts it as many times as the user wants
+        int compoundingFrequency, lengthOfInvestment;
+        double interestRate, principal, finalAmount;
+        String answer;
+        boolean flag = true;
+
+//      while loop that calculates as many investments as the user wants
         while (flag) {
-
-            System.out.print("enter the phrase you'd like to encrypt: ");
-            phrase = input.nextLine();
-
-            do {
-                System.out.print("enter a number between 1 and 255: ");
-                num = input.nextInt();
-            } while (num > 255 || num < 1);
-
-            System.out.println("Original string: " + phrase);
-            System.out.println("Shifted String: " + encryption(phrase, num));
-
+            System.out.print("how much are you investing?");
+            principal = input.nextDouble();
             input.skip("\n");
-            System.out.print("would you like to encrypt another (Y/N)?");
-            ans = input.nextLine();
 
-            if (ans.toUpperCase(Locale.ROOT).equals("N")) {
-                flag = false;
-            }
+            System.out.print("what is the interest rate on this investment(decimal form)?");
+            interestRate = input.nextDouble();
+            input.skip("\n");
+
+            System.out.print("what is the compounding frequency of the investment(in months)?");
+            compoundingFrequency = input.nextInt();
+            input.skip("\n");
+
+            System.out.print("for how many years are you making this investment?");
+            lengthOfInvestment = input.nextInt();
+            input.skip("\n");
+
+            finalAmount = compoundInterestCalculator(principal, interestRate, compoundingFrequency, lengthOfInvestment);
+
+            System.out.printf("after %d of investment at %.2f interest rate, your total is $%.2f %n %n", lengthOfInvestment,
+                    interestRate, finalAmount);
+
+            System.out.print("would you like to calculate the interest of another investment(y/n)?");
+            answer = input.nextLine();
+
+            if(answer.toUpperCase(Locale.ROOT).equals("N"))flag=false;
 
         }
+        System.out.println("thanks for using my program");
     }
 }

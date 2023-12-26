@@ -1,50 +1,137 @@
 //Filename: Problem4.java
 //Author: Keidy Lopez
-//Description: gives usefull information of an arraylist of grades
+//Description: metric/imperial convertion
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Scanner;
+import java.lang.Thread;
 
 public class Problem4 {
-    //finds staandard diviation of an arraylist
-    public static double std_dv_of_Arraylist(ArrayList myGrades,double mean, int size){
-        double num,difference,sumOfDifferences = 0,sumOfDifferences2, std_dv;
+   //gets the convertion system from user
+   public static int Metric_Or_Imperial(Scanner input,Thread thread) throws InterruptedException {
+      int choice;
+      do {
+         System.out.println("What would you like to convert?");
+         thread.sleep(500);
+         System.out.println("1) Metric to Imperial");
+         thread.sleep(500);
+         System.out.println("2) Imperial to Metric");
+         thread.sleep(500);
+         System.out.print("Enter your the number of your choice here:");
+         choice = input.nextInt();
+         input.skip("\n");
+      }while(choice>2 || choice<1);
+      return choice;
+   }
+//gets what units the user wants to convert
+   public static int convertionUnit(Scanner input, Thread thread) throws InterruptedException {
+      int choice;
+      do {
+         System.out.println("Units available for conversion");
+         thread.sleep(500);
+         System.out.println("1) Miles <--> Kilometer");
+         thread.sleep(500);
+         System.out.println("2) Gallons <--> Liters");
+         thread.sleep(500);
+         System.out.println("3) Yards <--> Meters");
+         thread.sleep(500);
+         System.out.println("4) Inches <--> Centimeters");
+         thread.sleep(500);
+         System.out.print("Enter your the number of your choice here:");
+         choice = input.nextInt();
+         input.skip("\n");
+      }while(choice>4||choice<1);
+      return choice;
+   }
+//converts from metric to imperial
+   public static double MtoIconvertion(int choice, Scanner input){
+      double convertion=0;
+      double amount = 0;
+      switch (choice){
+         case 1:
+            System.out.print("length of Kilometer/s: ");
+            amount=input.nextDouble();
+            convertion=amount*.621371;
+            break;
+         case 2:
+            System.out.print("volume of Liter/s:");
+            amount=input.nextDouble();
+            convertion=amount*0.264172;
+            break;
+         case 3:
+            System.out.print("length of Meter/s: ");
+            amount=input.nextDouble();
+            convertion=amount*1.0936;
+            break;
+         case 4:
+            System.out.print("Length: of Centimeter/s: ");
+            amount=input.nextDouble();
+            convertion=amount*0.393701;
+            break;
+      }
+         return convertion;
+   }
+//converts from imperial to metric
+   public static double ItoMconvertion(int choice, Scanner input) {
+      double convertion = 0;
+      double amount = 0;
+      switch (choice) {
+         case 1:
+            System.out.print("length of Mile/s: ");
+            amount = input.nextDouble();
+            convertion = amount * 1.60934;
+            break;
+         case 2:
+            System.out.print("volume of Gallon/s:");
+            amount = input.nextDouble();
+            convertion = amount * 3.78541;
+            break;
+         case 3:
+            System.out.print("length of Yard/s: ");
+            amount = input.nextDouble();
+            convertion = amount * 0.9144;
+            break;
+         case 4:
+            System.out.print("Length of Inch/es: ");
+            amount = input.nextDouble();
+            convertion = amount * 2.54;
+            break;
+      }
+      return convertion;
+   }
 
-        //I was completely lost as to how to do this part, so i got some help from StackOverflow
-        for (int i = 0; i < myGrades.size(); i++){
-            num = (double) myGrades.get(i);
-            difference = Math.pow(num- mean, 2);
-            sumOfDifferences += difference;
-        }
-        sumOfDifferences2 = sumOfDifferences/size;
-        std_dv=Math.sqrt(sumOfDifferences2);
-        //help from StackOverflow stops here
-        return std_dv;
-    }
+   public static void main(String[] arg) throws InterruptedException {
+      Scanner input = new Scanner(System.in);
+      Thread thread = new Thread();
+      int metric_or_imperial, convertionUnit;
+      double finishedConvertion;
+      String Answer;
+      boolean flag=true;
 
+      while (flag) {
+         metric_or_imperial = Metric_Or_Imperial(input, thread);
+         if (metric_or_imperial == 1) {
+            convertionUnit = convertionUnit(input, thread);
+            finishedConvertion = MtoIconvertion(convertionUnit, input);
+            thread.sleep(500);
+            System.out.println("\n" + "Calculating...");
+            thread.sleep(550);
+            System.out.printf("%.2f %n", finishedConvertion);
+         } else {
+            convertionUnit = convertionUnit(input, thread);
+            finishedConvertion = ItoMconvertion(convertionUnit, input);
+            thread.sleep(500);
+            System.out.println("\n" + "Calculating...");
+            thread.sleep(550);
+            System.out.printf("%.2f %n",finishedConvertion);
+         }
+         input.skip("\n");
+         System.out.print("do you need to convert another unit(y/n)? ");
+         Answer=input.nextLine();
 
-    public static void main(String[] args) {
-        ArrayList<Double> myGrades = Grades.getGrades();
-        int size = myGrades.size();
-
-        //Java Collections are solutions for all the data manipulation jobs; So i decided to make my life easier and use
-        //this class to find most of the requirements
-        double sum=0, max=Collections.max(myGrades),min=Collections.min(myGrades);
-        double mean,num,difference,sumOfDifferences = 0,sumOfDifferences2, std_dv;
-
-        //adds all the elements
-        for(double i:myGrades){
-            sum+=i;
-        }
-
-        mean=sum/size;
-        std_dv = std_dv_of_Arraylist(myGrades,mean,size);
-
-        System.out.printf("Number of elements in Grades: %d\n",size);
-        System.out.printf("Highest score: %.2f\n",max);
-        System.out.printf("Lowest score: %.2f\n",min);
-        System.out.printf("Mean of the score: %.2f\n",mean);
-        System.out.printf("The standard deviation of the scores: %.2f",std_dv);
-
-    }
+         if(Answer.toUpperCase().equals("N")){
+            flag=false;
+         }
+      }
+      System.out.println("Thanks for using my program!");
+   }
 }

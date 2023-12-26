@@ -1,71 +1,88 @@
 //Filename: Problem2.java
 //Author: Keidy Lopez
-//Description:
+//Description: Currency converter
 
-import java.util.Locale;
 import java.util.Scanner;
+import java.lang.Thread;
 
-public class Problem2 {
-    //removes all spaces and punctuation//not working
-    public static String stringCleaning(String phrase){
-        StringBuilder string=new StringBuilder();
-        char char2;
-        String phrase2=phrase.replaceAll(" ", "");
+public class Problem2 {                          // tells the program that there will be interruptions in the code
+                                                // (i.e. pauses) and to continue the program after the interruption is complete
+    public static int optionsMenu(Scanner input, Thread thread) throws InterruptedException {
+       int answer;
+        do {
+           System.out.println("What currency would you like to convert to?");
+           thread.sleep(500);
+           System.out.println("1) West African CFA franc");
+           thread.sleep(500);
+           System.out.println("2) Dominican Pesos");
+           thread.sleep(500);
+           System.out.println("3) Indian Rupee");
+           thread.sleep(500);
+           System.out.println("4) Euro");
+           thread.sleep(500);
+           System.out.print("please enter the number your choice here:");
 
-        for(int i = 0;i<phrase2.length();i++){
-            char2 = phrase2.charAt(i);
-            if(char2>=33&&char2<=47||char2>=58&&char2<=64||char2>=91&&char2<=96||char2>=123&&char2<=126){
-                i+=1;
-            }
-            else{
-                string.append(char2);
-            }
-        }
-        return string.toString();
+           answer= input.nextInt();
+           input.skip("\n");
+
+           if(answer>4||answer<0){
+               thread.sleep(300);
+               System.out.println("\n"+"please enter a valid option"+"\n");
+               thread.sleep(300);
+           }
+
+       }while(answer>4||answer<0);
+
+        return answer;
     }
 
-    public static void main(String[] args) {
-        //variables
-        int a = 0, e = 0, i = 0, o = 0, u = 0;
+    public static double currencyConvetion(Scanner input,Thread thread,int choice) throws InterruptedException {
+        double dollar;
+        double total = 0;
+
+        thread.sleep(500);
+        System.out.print("please enter your dollar ammount:");
+        dollar = input.nextDouble();
+        input.skip("\n");
+
+        switch(choice) {
+            case 1:
+                total = dollar * 612.90;
+                break;
+            case 2:
+                total = dollar * 56.25;
+                break;
+            case 3:
+                total= dollar * 82.52;
+                break;
+            case 4:
+                total= dollar * 0.93;
+                break;
+        }
+
+        return total;
+    }
+
+
+    public static void main(String[] args) throws InterruptedException {
         Scanner input = new Scanner(System.in);
-        String phrase,phrase2, ans;
-        boolean flag = true;
-//asks for a phrase and returns the number of vowels in the phrase and thepercentage of the phrase they make up
-        while (flag) {
-            System.out.print("please enter a phrase for analysis: ");
-            phrase = input.nextLine();
-            phrase2=stringCleaning(phrase);
-            System.out.print(stringCleaning(phrase));
-            for (int I = 0; I < phrase2.length(); I++) {
-                if (phrase2.charAt(I) == 65 || phrase2.charAt(I) == 97) {
-                    a++;
-                } else if (phrase2.charAt(I) == 69 || phrase2.charAt(I) == 101) {
-                    e++;
-                } else if (phrase2.charAt(I) == 73 || phrase2.charAt(I) == 105) {
-                    i++;
-                } else if (phrase2.charAt(I) == 79 || phrase2.charAt(I) == 111) {
-                    o++;
-                } else if (phrase2.charAt(I) == 85 || phrase2.charAt(I) == 117) {
-                    u++;
-                }
+        Thread thread= new Thread();
+        int choice;
+        double total;
+        String answer;
+        boolean flag= true;
 
-            }
-//i couldnt figure out why my percentages arent workin
-            System.out.println("letter:    Count:    %:");
-            System.out.println("a:         " + a + "         " + phrase2.length()/a + "%");
-            System.out.println("e:         " + e + "         " + phrase2.length()/e + "%");
-            System.out.println("i:         " + i + "         " + phrase2.length()/i + "%");
-            System.out.println("o:         " + o + "         " + phrase2.length()/o + "%");
-            System.out.println("u:         " + u + "         " + phrase2.length()/u + "%");
-
-
-            System.out.print("would you like to encrypt another (Y/N)?");
-            ans = input.nextLine();
-
-            if (ans.toUpperCase(Locale.ROOT).equals("N")) {
+        while(flag) {
+            choice = optionsMenu(input, thread);
+            System.out.println(currencyConvetion(input, thread, choice));
+            System.out.print("would you like to do another conversion?(y/n): ");
+            answer = input.nextLine();
+            if (answer.toUpperCase().equals("N")) {
                 flag = false;
             }
 
         }
+        System.out.print("thanks for using my program");
+
     }
 }
