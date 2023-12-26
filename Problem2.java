@@ -1,17 +1,42 @@
 //Filename: Problem2.java
 //Author: Keidy Lopez
-//Description: vector class driver program
+//Description: adds multiple student objects to an arraylist
+
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Problem2 {
     public static void main(String[] args) {
-        double x=3.0,y=-5.0;
-        double x2=-3.0,y2=5.0;
-        Vector vector = new Vector(x,y);
+        Scanner input = new Scanner(System.in);
+        ArrayList<Student> myStudents = new ArrayList<>(10);
+        boolean flag = true;
+        String ans;
 
-        System.out.println("This is a driver program for the Vector Class\nThe X value is 3.0 and the Y value is -5.0");
-        System.out.println("testing the modified add method, x = -3.0, y=5.0");
-        Vector vector2=vector.add(x2,y2);
-        System.out.println(vector2.getX());
-        System.out.println(vector2.getY());
+        //creates as many student objects as a user desires
+        while (flag) {
+            Student student = Student.getStudent(input);
+            myStudents.add(student);
+
+            System.out.print("Would you like to add another student(Y/N)? ");
+            input.skip("\n");
+            ans = input.nextLine();
+            if (!(ans.equalsIgnoreCase("yes") || ans.equalsIgnoreCase("y"))) {
+                flag = false;
+            }
+        }
+
+        //prints out all the attributes for all the Students created
+        for (Student student : myStudents) {
+            if (student.isAbove2(student.getGPA())) {
+                System.out.printf("%s,%s,%d,%.2f,Yes\n", student.getName(), student.getLastname(), student.getAge(),
+                        student.getGPA());
+            }
+            else {
+                System.out.printf("%s,%s,%d,%.2f,No\n", student.getName(), student.getLastname(), student.getAge(),
+                        student.getGPA());
+            }
+
+
+        }
     }
 }
