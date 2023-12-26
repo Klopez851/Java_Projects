@@ -1,61 +1,28 @@
 //Filename: Problem1.java
 //Author: Keidy Lopez
-//Description: compund interest calculator
+//Description: vector class driver program
 
-import java.util.Locale;
-import java.util.Scanner;
-import java.lang.Math;
 
 public class Problem1 {
-    public static double compoundInterestCalculator(double p, double r, int n, int t ){
-//      additional values needed for calculation
-        double base,A,c;
-        int expo;
-//      breakes up interest formula into chucks according to PEMDAS, for ease of calculation
-        base = ((r/n)+1);
-        expo = n*t;
-        c = Math.pow(base, expo);
-        A = c*p;
+    public static void main(String[] args){
+        double x=3.0,y=-5.0;
+        double x2=-3.0,y2=5.0;
+        Vector vector = new Vector(x,y);
+        Vector vector2 = new Vector(x2,y2);
 
-        return A;
-    }
-    public static void main(String[] args) {
-//      variables needed
-        Scanner input = new Scanner(System.in);
-        int compoundingFrequency, lengthOfInvestment;
-        double interestRate, principal, finalAmount;
-        String answer;
-        boolean flag = true;
+        System.out.println("This is a driver program for the Vector Class\nThe X value is 3.0 and the Y value is -5.0");
+        System.out.println("Testing getX");
+        System.out.println(vector.getX());
+        System.out.println("Testing getY");
+        System.out.println(vector.getY());
+        System.out.println("Testing getMagnitude");
+        System.out.println(vector.getMagnitudeAtOrigin());
+        System.out.println("Testing add, new vector had x value of -3.0 and y value of 5.0");
+        System.out.println(vector.add(vector2).getX());
+        System.out.println(vector.add(vector2).getY());
+        System.out.println("Testing scale, it is being scaled by 2");
+        System.out.println("new X value: " +vector.scale(2).getX());
+        System.out.println("new Y value: " +vector.scale(2).getY());
 
-//      while loop that calculates as many investments as the user wants
-        while (flag) {
-            System.out.print("how much are you investing?");
-            principal = input.nextDouble();
-            input.skip("\n");
-
-            System.out.print("what is the interest rate on this investment(decimal form)?");
-            interestRate = input.nextDouble();
-            input.skip("\n");
-
-            System.out.print("what is the compounding frequency of the investment(in months)?");
-            compoundingFrequency = input.nextInt();
-            input.skip("\n");
-
-            System.out.print("for how many years are you making this investment?");
-            lengthOfInvestment = input.nextInt();
-            input.skip("\n");
-
-            finalAmount = compoundInterestCalculator(principal, interestRate, compoundingFrequency, lengthOfInvestment);
-
-            System.out.printf("after %d of investment at %.2f interest rate, your total is $%.2f %n %n", lengthOfInvestment,
-                    interestRate, finalAmount);
-
-            System.out.print("would you like to calculate the interest of another investment(y/n)?");
-            answer = input.nextLine();
-
-            if(answer.toUpperCase(Locale.ROOT).equals("N"))flag=false;
-
-        }
-        System.out.println("thanks for using my program");
     }
 }
